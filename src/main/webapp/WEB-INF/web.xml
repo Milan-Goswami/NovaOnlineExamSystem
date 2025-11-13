@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Jakarta EE 9 web.xml (Servlet 5.0) for Tomcat 10
+  - Declares HelloServlet and maps it to /hello
+  - Defines welcome file list
+-->
+<web-app
+    xmlns="https://jakarta.ee/xml/ns/jakartaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+    version="5.0">
+
+  <!-- Display name for the application -->
+  <display-name>NovaOnlineExamSystem</display-name>
+
+  <!-- Servlet declaration -->
+  <servlet>
+    <servlet-name>HelloServlet</servlet-name>
+    <servlet-class>com.nova.HelloServlet</servlet-class>
+    <!-- Load on startup to initialize early (optional) -->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <!-- Servlet mapping -->
+  <servlet-mapping>
+    <servlet-name>HelloServlet</servlet-name>
+    <url-pattern>/hello</url-pattern>
+  </servlet-mapping>
+
+  <!-- Default welcome file when root is accessed -->
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+  <!-- RegisterServlet mapping: handles POST /register -->
+  <servlet>
+    <servlet-name>RegisterServlet</servlet-name>
+    <servlet-class>com.nova.servlet.RegisterServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegisterServlet</servlet-name>
+    <url-pattern>/register</url-pattern>
+  </servlet-mapping>
+
+  <!-- LoginServlet mapping: handles POST /login -->
+  <servlet>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>com.nova.servlet.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/login</url-pattern>
+  </servlet-mapping>
+
+  <!-- StartExamServlet mapping: loads questions and forwards to exam.jsp -->
+  <servlet>
+    <servlet-name>StartExamServlet</servlet-name>
+    <servlet-class>com.nova.servlet.StartExamServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StartExamServlet</servlet-name>
+    <url-pattern>/start-exam</url-pattern>
+  </servlet-mapping>
+
+  <!-- SubmitExamServlet mapping: handles exam submission and scoring -->
+  <servlet>
+    <servlet-name>SubmitExamServlet</servlet-name>
+    <servlet-class>com.nova.servlet.SubmitExamServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SubmitExamServlet</servlet-name>
+    <url-pattern>/submit-exam</url-pattern>
+  </servlet-mapping>
+
+</web-app>
+
+

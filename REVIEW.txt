@@ -1,0 +1,74 @@
+A) SUMMARY
+Updated the build-ready configuration and shared UI to keep the project consistent and maintainable. Added database setup guidance with a default teacher account, moved JDBC credentials to editable placeholders, introduced reusable servlet guards, and aligned all protected pages with the new navigation/theme so long text wraps cleanly. Maven build (`mvn -q -DskipTests clean package`) now succeeds locally after these adjustments.
+
+B) AUTOMATIC FIXES APPLIED
+1. db_init.sql: added execution comment and upserted a default teacher login for quick testing.
+2. src/main/java/com/nova/dao/DBConnection.java: replaced hard-coded password with a placeholder and strengthened beginner comment.
+3. src/main/java/com/nova/servlet/ServletHelpers.java: added requireStudentLogin/requireTeacherLogin helpers and supporting imports.
+4. src/main/java/com/nova/servlet/*Servlet.java: switched protected endpoints to use the new helpers and updated redirects to student_dashboard.jsp.
+5. src/main/webapp/index.jsp: created JSP landing page that reuses the shared navbar/theme scripts.
+6. src/main/webapp/WEB-INF/web.xml: changed the welcome file to index.jsp.
+7. src/main/webapp/WEB-INF/jsp/nav.jsp & logout.jsp: pointed Home/logout flows to the new landing page.
+8. src/main/webapp/css/style.css: added landing styles, alert/table helpers, and enforced flex-based question cards with proper word wrapping.
+9. src/main/webapp/*teacher*/student* JSPs: refreshed layouts to use shared classes, include nav.jsp, and route students to student_dashboard.jsp.
+10. src/main/webapp/dashboard.jsp: replaced legacy dashboard with a redirect to student_dashboard.jsp for backward compatibility.
+
+C) REMAINING SUGGESTIONS
+1. StudentDAO.java & TeacherDAO.java: hash passwords before storing/validating, then update db_init.sql sample data to use hashed values.
+2. DBConnection.java: externalize URL/credentials via environment variables or tomcat context parameters instead of editing code per environment.
+3. ResultDAO.java: capture attempt timestamps and total questions so percent calculations can reflect real exam lengths.
+4. student_dashboard.jsp: consider displaying formatted dates once results store timestamps for better progress tracking.
+
+D) RUN & TEST GUIDE (WINDOWS)
+1. Prerequisites
+   - Install JDK 17 and ensure `java -version` reports 17.x.
+   - Install Apache Maven (`mvn -version`).
+   - Install MySQL Server 8.x and create a user with privileges for the nova_exam schema.
+   - Install Apache Tomcat 10.x (Jakarta EE 9 compatible), e.g., `C:\apache-tomcat-10.x`.
+2. Database setup
+   - Edit `src/main/java/com/nova/dao/DBConnection.java` with your MySQL username and password.
+   - Run schema script: `mysql -u root -p < db_init.sql`.
+   - Verify tables: `mysql -u root -p nova_exam -e "SHOW TABLES;"`.
+3. Build the application
+   - `cd D:\NovaOnlineExamSystem`
+   - `mvn clean package`
+   - (Completed successfully in this review with `mvn -q -DskipTests clean package`).
+4. Deploy to Tomcat
+   - Copy `target\NovaOnlineExamSystem.war` to `C:\apache-tomcat-10.x\webapps\`.
+5. Start/stop Tomcat
+   - Start: `C:\apache-tomcat-10.x\bin\startup.bat`
+   - Stop: `C:\apache-tomcat-10.x\bin\shutdown.bat`
+6. Test in browser (after deployment)
+   - Landing: http://localhost:8080/NovaOnlineExamSystem/index.jsp
+   - Student register: http://localhost:8080/NovaOnlineExamSystem/student_register.html
+   - Student login: http://localhost:8080/NovaOnlineExamSystem/student_login.html
+   - Teacher login: http://localhost:8080/NovaOnlineExamSystem/teacher_login.html
+   - Start exam (student) : http://localhost:8080/NovaOnlineExamSystem/start-exam
+   - Teacher dashboard: http://localhost:8080/NovaOnlineExamSystem/view-questions
+7. Postman samples (x-www-form-urlencoded body)
+   - Student login: POST http://localhost:8080/NovaOnlineExamSystem/login (fields: email, password)
+   - Teacher login: POST http://localhost:8080/NovaOnlineExamSystem/teacher-login (fields: email, password)
+   - Add question: POST http://localhost:8080/NovaOnlineExamSystem/add-question (fields: questionText, optionA, optionB, optionC, optionD, correctOption) – requires teacher session cookie.
+8. MySQL verification queries
+   - `SELECT id, name, email FROM student;`
+   - `SELECT id, question_text, correct_option FROM question ORDER BY id DESC;`
+   - `SELECT student_id, score FROM result ORDER BY id DESC;`
+   - `SELECT id, email FROM teacher;`
+9. Logs & troubleshooting
+   - Check `C:\apache-tomcat-10.x\logs\catalina.out` (or `logs\localhost.<date>.log`) for servlet/runtime issues.
+   - Tomcat manager (optional) helps confirm deployment status.
+
+E) FINAL CHECKLIST
+[ ] Update DBConnection.java with local MySQL credentials.
+[ ] Run `mysql -u root -p < db_init.sql` to create schema and seed default teacher.
+[ ] Execute `mvn clean package` from `D:\NovaOnlineExamSystem`.
+[ ] Deploy the generated WAR to Tomcat and start the server.
+[ ] Log in as the default teacher (teacher1@example.com / 12345) and confirm question CRUD.
+[ ] Register a student, take an exam, and verify the result appears on the dashboard.
+
+AUTH_UI_UPDATE
+- Files updated: src/main/webapp/student_login.html, src/main/webapp/student_register.html, src/main/webapp/teacher_login.html, src/main/webapp/teacher_register.html, src/main/webapp/css/style.css, src/main/webapp/WEB-INF/jsp/nav.jsp
+- Student login/register UI updated
+- Teacher login/register UI updated
+- Navbar simplified
+- Manual step: confirm that `logout.jsp` is accessible for student sign-out or replace with a student-specific servlet if introduced later.

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!-- Updated to use the shared auth card layout with theme toggle and sign-out controls. -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Teacher Login • Nova Online Examination System</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="auth-page">
+    <header class="auth-topbar">
+      <a class="auth-topbar__brand" href="index.jsp">Nova Online Exam</a>
+      <div class="auth-topbar__actions">
+        <button class="btn btn-secondary btn--sm" type="button" data-theme-toggle>Toggle theme</button>
+        <a class="btn btn-outline btn--sm" href="logout.jsp">Sign out</a>
+      </div>
+    </header>
+
+    <main class="auth-main">
+      <section class="auth-card" aria-labelledby="teacher-login-title">
+        <h1 id="teacher-login-title">Teacher Login</h1>
+        <p class="form-note">Sign in to manage questions and review student progress.</p>
+
+        <form class="auth-form" method="post" action="teacher-login">
+          <!-- Update the action above if the TeacherLoginServlet mapping changes. -->
+          <div class="form-field">
+            <label for="teacherEmail">Email</label>
+            <input id="teacherEmail" name="email" type="email" placeholder="teacher1@example.com" autocomplete="email" required />
+          </div>
+          <div class="form-field">
+            <label for="teacherPassword">Password</label>
+            <input id="teacherPassword" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required />
+          </div>
+          <button type="submit" class="btn btn-primary">Sign In</button>
+        </form>
+
+        <p class="form-note" id="teacherLoginMessage" aria-live="polite"></p>
+
+        <div class="auth-links">
+          <a class="text-link" href="teacher_register.html">Don't have an account? Register</a>
+          <a class="text-link" href="index.jsp">Back to home</a>
+        </div>
+      </section>
+    </main>
+
+    <script src="js/theme.js"></script>
+    <script>
+      // Basic helper to surface login status messages via URL parameters.
+      (function () {
+        const message = document.getElementById('teacherLoginMessage');
+        if (!message) return;
+        const params = new URLSearchParams(window.location.search);
+        const status = params.get('status');
+        const error = params.get('error');
+        if (status === 'registered') {
+          message.textContent = 'Registration successful! Log in with your new credentials.';
+          message.classList.remove('form-note--error');
+        } else if (status === 'loggedout') {
+          message.textContent = 'You have been logged out safely.';
+          message.classList.remove('form-note--error');
+        } else if (error === 'duplicate') {
+          message.textContent = 'That email is already registered. You can log in instead.';
+          message.classList.add('form-note--error');
+        } else if (error === 'unauthorized') {
+          message.textContent = 'Please log in to access the teacher dashboard.';
+          message.classList.add('form-note--error');
+        } else {
+          message.textContent = '';
+          message.classList.remove('form-note--error');
+        }
+      })();
+    </script>
+  </body>
+</html>

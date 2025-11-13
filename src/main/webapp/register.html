@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!-- Registration page: posts name, email, password to /register (POST) -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register - Nova Online Exam</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="gradient-bg">
+    <div class="container card">
+      <h1>Create your account</h1>
+      <form method="post" action="register" class="form">
+        <label>
+          <span>Name</span>
+          <input type="text" name="name" required />
+        </label>
+        <label>
+          <span>Email</span>
+          <input type="email" name="email" required />
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" name="password" required />
+        </label>
+        <button type="submit" class="btn">Register</button>
+      </form>
+      <p class="hint">Already have an account? <a href="login.html">Login</a></p>
+    </div>
+  </body>
+</html>
+
+
