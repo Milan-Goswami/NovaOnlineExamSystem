@@ -1,4 +1,5 @@
 package com.nova.model;
+import java.util.Date;
 
 /**
  * Result model captures the outcome of a student's exam attempt.
@@ -8,6 +9,7 @@ public class Result {
     private int id; // Unique identifier for the result record
     private int studentId; // Foreign key to Student.id
     private int score; // Numeric score for the attempt
+    private Date examDate;
 
     /** No-argument constructor. */
     public Result() {
@@ -45,12 +47,21 @@ public class Result {
         this.score = score;
     }
 
-    @Override
+    public Date getExamDate() {
+        return examDate;
+    }
+
+    public void setExamDate(Date examDate) {
+        this.examDate = examDate;
+    }
+
+       @Override
     public String toString() {
         return "Result{" +
                 "id=" + id +
                 ", studentId=" + studentId +
                 ", score=" + score +
+                ", examDate=" + examDate +
                 '}';
     }
 }

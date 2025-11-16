@@ -1,7 +1,9 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.nova.dao.ResultDAO" %>
+<%@ page import="com.nova.dao.QuestionDAO" %>
 <%@ page import="com.nova.model.Result" %>
 <%@ page import="com.nova.servlet.ServletHelpers" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <!-- Beginner note: This dashboard pulls recent exam scores from the database and presents a friendly overview. -->
 <%
   if (!ServletHelpers.isStudentLoggedIn(request)) {
@@ -28,6 +30,12 @@
           }
       }
   }
+
+   QuestionDAO questionDAO = new QuestionDAO();
+
+   // Date formatter for DD/MM/YYYY HH:mm AM/PM format
+  SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +52,7 @@
       <section class="dashboard-layout">
         <div class="dashboard-header">
           <div class="dashboard-greeting">
-            <h1>Hello, <%= studentName %> 👋</h1>
+            <h1>Hello, <%= studentName %> </h1>
             <p>Here is a quick summary of your progress. You can jump right into the next exam whenever you are ready.</p>
             <div class="dashboard-actions">
               <a class="btn btn-primary" href="<%= request.getContextPath() %>/start-exam">Start New Exam</a>
@@ -88,17 +96,29 @@
                 </tr>
               </thead>
               <tbody>
-              <%
+                
+             <%
                 if (results != null && !results.isEmpty()) {
-                    int index = 1;
+                    int index = totalExams; // Start from total exams and count down
                     for (Result r : results) {
-                        int score = r.getScore();
-                        int percent = Math.max(0, Math.min(100, score));
+                        int correctAnswers = r.getScore();
+                        // Get total questions count from question table
+                        int totalQuestions = questionDAO.getTotalQuestionsCount();
+                        if (totalQuestions == 0) totalQuestions = 10; // Default fallback
+                        
+                        // Calculate percentage: (correct answers / total questions) * 100
+                        int percent = (correctAnswers * 100) / totalQuestions;
+                        percent = Math.max(0, Math.min(100, percent)); // Ensure 0-100 range
+                        
+                        String examDate = "Not recorded";
+                        if (r.getExamDate() != null) {
+                            examDate = dateFormat.format(r.getExamDate());
+                        }
               %>
-                <tr>
-                  <td data-label="#"><%= index++ %></td>
-                  <td data-label="Date">Not recorded</td>
-                  <td data-label="Score"><%= score %></td>
+                 <tr>
+                  <td data-label="#"><%= index-- %></td>
+                  <td data-label="Date"><%= examDate %></td>
+                  <td data-label="Score"><%= correctAnswers %> / <%= totalQuestions %></td>
                   <td data-label="Percent"><%= percent %>%</td>
                 </tr>
               <%

@@ -13,9 +13,9 @@ public class DBConnection { // Defines a public utility class for DB connections
 
     // -------------------- Configuration (adjust as needed) --------------------
     private static final String URL = "jdbc:mysql://localhost:3306/nova_exam"; // JDBC URL including host, port, and database name
-    private static final String USERNAME = "root"; // TODO: replace with your MySQL username
-    private static final String PASSWORD = "8238366756@Milan"; // TODO: replace with your MySQL password (never hard-code secrets in production)
-
+    private static final String USERNAME = "root"; 
+    private static final String PASSWORD = "8238366756@Milan"; 
+    
     /**
      * Returns a live JDBC Connection to the MySQL database.
      * This method loads the MySQL driver class and then asks DriverManager

@@ -67,6 +67,30 @@ public class QuestionDAO {
         }
     }
 
+
+    /**
+     * Returns total count of questions in the question table
+     * @return total number of questions
+     */
+    public int getTotalQuestionsCount() {
+        final String sql = "SELECT COUNT(*) as total FROM question";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn != null ? conn.prepareStatement(sql) : null) {
+
+            if (ps == null) return 0;
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("total");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+
     /**
      * Retrieves a single question by its ID.
      * @param id question primary key
