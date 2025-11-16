@@ -95,15 +95,17 @@
                   <th scope="col">Percent</th>
                 </tr>
               </thead>
-              <tbody>
-                
-             <%
+              <%
                 if (results != null && !results.isEmpty()) {
                     int index = totalExams; // Start from total exams and count down
                     for (Result r : results) {
                         int correctAnswers = r.getScore();
-                        // Get total questions count from question table
-                        int totalQuestions = questionDAO.getTotalQuestionsCount();
+                        // Get current total questions count from question table
+                        int currentTotalQuestions = questionDAO.getTotalQuestionsCount();
+                        
+                        // Estimate total questions at exam time based on score
+                        // If score > current questions, use score as reference
+                        int totalQuestions = Math.max(currentTotalQuestions, correctAnswers);
                         if (totalQuestions == 0) totalQuestions = 10; // Default fallback
                         
                         // Calculate percentage: (correct answers / total questions) * 100
@@ -131,7 +133,6 @@
               <%
                 }
               %>
-              </tbody>
             </table>
           </div>
         </section>

@@ -37,11 +37,6 @@
           </div>
         </a>
       </section>
-
-      <section class="landing-links">
-        <a class="text-link" href="student_register.html">Create a student account</a>
-        <a class="text-link" href="teacher_register.html">First time teacher? Register here</a>
-      </section>
     </main>
 
     <footer class="site-footer">

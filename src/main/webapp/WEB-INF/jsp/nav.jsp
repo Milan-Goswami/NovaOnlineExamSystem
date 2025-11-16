@@ -14,7 +14,7 @@
   }
 %>
 <header class="site-nav site-nav--compact">
-  <a class="site-nav__title" href="<%= brandHref %>">Nova Online Exam</a>
+  <a class="site-nav__title">Nova Online Exam</a>
   <div class="site-nav__actions">
     <button class="btn btn-secondary btn--sm" type="button" data-theme-toggle>Toggle theme</button>
     <a class="btn btn-outline btn--sm" href="<%= logoutHref %>">Sign out</a>
