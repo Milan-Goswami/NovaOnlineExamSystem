@@ -14,7 +14,7 @@ public class DBConnection { // Defines a public utility class for DB connections
     // -------------------- Configuration (adjust as needed) --------------------
     private static final String URL = "jdbc:mysql://localhost:3306/nova_exam"; // JDBC URL including host, port, and database name
     private static final String USERNAME = "root"; 
-    private static final String PASSWORD = "8238366756@Milan"; 
+    private static final String PASSWORD = ""; 
     
     /**
      * Returns a live JDBC Connection to the MySQL database.
