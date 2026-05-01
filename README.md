@@ -56,7 +56,7 @@ Update the database credentials in `src/main/java/com/nova/dao/DBConnection.java
 ```java
 private static final String URL = "jdbc:mysql://localhost:3306/nova_exam";
 private static final String USERNAME = "root";
-private static final String PASSWORD = "8238366756@Milan"; // Change this to your MySQL password
+private static final String PASSWORD = "password"; // Change this to your MySQL password
 ```
 
 ### Step 3: Build the Application
